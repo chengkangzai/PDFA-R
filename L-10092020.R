@@ -7,6 +7,7 @@
 
 
 
+
 4 / 2 + 3 * 1 - 2 * 2
 
 assign('j', 4)
@@ -81,7 +82,11 @@ x = c("A", "B", "AB", "A", "B")
 y = factor(c("A", "B", "AB", "A", "B"))
 
 age = sample(18:25, 250, TRUE)#FROM18->25,250 quantity,can be repeated
-country = c("Malyaisan", "Indonesia", "Chianese", "Central Asia", "Middle East")
+country = c("Malyaisan",
+            "Indonesia",
+            "Chianese",
+            "Central Asia",
+            "Middle East")
 nationality = sample(country, 250, TRUE)
 catNat = factor(nationality)
 table(catNat)
