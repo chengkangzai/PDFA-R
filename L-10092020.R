@@ -1,22 +1,12 @@
-
-
-
-
-
-
-
-
-
-
 4 / 2 + 3 * 1 - 2 * 2
 
 assign('j', 4)
 
 rm() #remove variable
 ls() #list all variable
-is.numeric()
 i = 5L
 #i = 5L
+is.numeric(i)
 is.integer(i)
 #STring
 x = "welcome"
@@ -95,3 +85,10 @@ tapply(age, catNat, min)
 tapply(age, catNat, mean)
 View(age)
 View(nationality)
+
+names(l)="Name" 
+l[3]
+l[2:4]
+l[-1] #exclude number 1
+l[c(1,5)] #exclude number 1
+
