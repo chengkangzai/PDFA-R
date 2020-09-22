@@ -60,19 +60,20 @@ l1[3]
 l1[[3]]
 l1[[3]][3]
 
-names(l1) = c('a','b','c','d')
+names(l1) = c('a', 'b', 'c', 'd')
 #name it
 l1$b
 l1[2]
 l1['b']
 
-d1=data.frame(no=1:3,name=c("ali","Tan","Aaren"))
-d1=cbind(d1,c("Bukit Jali","Sri Pertaling","Klang"))
+d1 = data.frame(no = 1:3, name = c("ali", "Tan", "Aaren"))
+d1 = cbind(d1, c("Bukit Jali", "Sri Pertaling", "Klang"))
 #proper name !
-names(d1)[3]="Address"
+names(d1)[3] = "Address"
 #New record added
-d1 = rbind.data.frame(d1,data.frame(no=3,name="Khalid",Address="Serdang"))
-d1$contact = c("0123456789","0123456789","0123456789","0123456789")
+d1 = rbind.data.frame(d1, data.frame(no = 3, name = "Khalid", Address =
+                                       "Serdang"))
+d1$contact = c("0123456789", "0123456789", "0123456789", "0123456789")
 d1[4]
-d1[,4]
-d1[4,]
+d1[, 4]
+d1[4, ]
