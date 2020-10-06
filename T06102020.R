@@ -27,3 +27,21 @@ paste(functionReverse(as.character(
 functionReverse = function(input) {
   return(as.integer(rev(strsplit(input, NULL)[[1]])))
 }
+
+#############################################################################
+
+
+sales = as.integer(readline(prompt = "You sale how much boi"))
+
+message(getSalary(sales))
+
+getSalary= function(sales){
+  return((sales*15/100)+100)
+}
+
+
+
+
+
+
+
