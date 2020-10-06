@@ -20,11 +20,10 @@ functionD = function() {
 
 #############################################################################
 #2
-##miss understanding
 paste(functionReverse(as.character(
-  readline(prompt = "Give me sth! i will reverse it")
+  readline(prompt = "Give me number between 1 and 9999")
 )), collapse = '')
 
 functionReverse = function(input) {
-  return(rev(strsplit(input, NULL)[[1]]))
+  return(as.integer(rev(strsplit(input, NULL)[[1]])))
 }
