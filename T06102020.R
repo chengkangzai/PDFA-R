@@ -29,19 +29,25 @@ functionReverse = function(input) {
 }
 
 #############################################################################
-
-
+#3
 sales = as.integer(readline(prompt = "You sale how much boi"))
 
 message(getSalary(sales))
 
-getSalary= function(sales){
-  return((sales*15/100)+100)
+getSalary = function(sales) {
+  return((sales * 15 / 100) + 100)
 }
 
+#############################################################################
+#4
+input = as.integer(readline(prompt = "Give me a number"))
 
+message(getFactoria(input))
 
-
-
-
-
+getFactoria = function(input) {
+  fact=1
+  for( i in 1:input) {
+    fact = fact * i
+  }
+  return(fact)
+}
