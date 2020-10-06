@@ -19,6 +19,8 @@ functionD = function() {
 }
 
 #############################################################################
+#2
+##miss understanding
 paste(functionReverse(as.character(
   readline(prompt = "Give me sth! i will reverse it")
 )), collapse = '')
