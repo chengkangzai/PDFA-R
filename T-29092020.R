@@ -72,25 +72,47 @@ repeat {
 }
 
 #Q6
-url ="http://stat.ethz.ch/Teaching/Datasets/WBL/legierung.dat"
+url = "http://stat.ethz.ch/Teaching/Datasets/WBL/legierung.dat"
 
-d.alloy[] = read.table(url, header = TRUE) 
+d.alloy = read.table(url, header = TRUE)
 
 #Which curing temperatures did the scientist use? temp
 number = c(integer())
-breaking.class=d.alloy;
+breaking.class = d.alloy
+
 breaking.class = cbind(breaking.class, c(1:36))
-names(breaking.class)[5]="Strength"
-for (element in d.alloy["temp"]) {
-  avg=mean(element)
-  if (elemenent >avg) {
-    
+names(breaking.class)[5] = "Strength"
+
+d.alloy[which(data$breaking == max(data$breaking)), 2]
+
+d.alloy$breakingLevel = ifelse(d.alloy$breaking > mean(d.alloy$breaking), "High", "Low")
+
+
+#for (element in d.alloy["temp"]) {
+#  avg = mean(element)
+#  if (element > avg) {
+#    message("Its higher")
+#  }else{
+#    message("Its lower")
+#  }
+#}
+
+#C
+temp = 0
+for (element in d.alloy["breaking"]) {
+  if (temp < 250) {
+    message("break!")
+  } else{
+    temp = temp + element
   }
 }
 
-
-for (element in d.alloy[]){
-  print(element["temp"])
+tempp = 0
+i = 1
+while (tempp < 250) {
+  if (tempp < 250) {
+    tempp = tempp + d.alloy["breaking"][1]
+  }
+  i = i + 1
 }
-
-
+message("Stop it !")
