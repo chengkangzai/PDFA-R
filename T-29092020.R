@@ -41,7 +41,7 @@ while (x == TRUE) {
 ##You have to manually trigger it .. select and run
 print("Hi Can i know what language you liked tht most?")
 print("Enter 1 for C, 2 for Java, and 3 for VB.Net")
-input = as.integer(scan(what = character(), n = 1))
+input = as.character(scan(what = character(), n = 1))
 x = switch (input,
             "1" = "You like C!",
             "2" = "You like Java!",
@@ -61,6 +61,8 @@ while (nNum > 0) {
   sum = sum + nNum
   nNum = nNum - 1
 }
+
+message(sum)
 
 #Q5
 repeat {
@@ -85,6 +87,7 @@ names(breaking.class)[5] = "Strength"
 
 d.alloy[which(data$breaking == max(data$breaking)), 2]
 
+# B
 d.alloy$breakingLevel = ifelse(d.alloy$breaking > mean(d.alloy$breaking), "High", "Low")
 
 
