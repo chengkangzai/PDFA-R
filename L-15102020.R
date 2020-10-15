@@ -73,20 +73,20 @@ switch (as.character(readline(prompt = "1,2,?")),
         "1" = message(10),
         "2" = message(100),
         message(0))
-tempHolder=1
+tempHolder = 1
 for (i in 1:10) {
-  tempHolder=tempHolder*i
+  tempHolder = tempHolder * i
 }
 
 
-foo = function(a1){
+foo = function(a1) {
   return(a1)
 }
 
-x=1:4
-x>2
-v1=c(4,75,8,1,40,16,22,89,31,98)
-c(9,8,10,8,9)
+x = 1:4
+x > 2
+v1 = c(4, 75, 8, 1, 40, 16, 22, 89, 31, 98)
+c(9, 8, 10, 8, 9)
 
 test = 20.01
 as.integer(test)
@@ -94,18 +94,19 @@ ceiling(test)
 remove(test)
 length(v1)
 
-genrate = function(){
-  return(sample(1:10,replace = TRUE))
+genrate = function() {
+  return(sample(1:10, replace = TRUE))
 }
 
-calulcate = function(input){
+calulcate = function(input) {
   number = 0
   for (element in input) {
-    if (as.integer(element) <5) {
-      number =number +as.integer(element)
+    if (as.integer(element) < 5) {
+      number = number + as.integer(element)
     }
   }
   return(number)
 }
+message(calulcate(genrate()))
 
-
+test = matrix()
