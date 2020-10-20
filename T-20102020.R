@@ -26,16 +26,30 @@ rbind(mat, sample(50:100, size = 4))
 sum(mat)
 
 ## Q5
-mylist = list(mat, x)
+mylist = list(mat,x)
 
 ## Q6
-myarray = array(dim = c(3, 5), data = c(c(1, 2, 3), c(3, 4, 5), c(6, 7, 8)))
-myarray[1, 3]
+myarray = array(dim = c(3,5),data =sample(1:50))
+myarray[1,3]
 
 
 ## Q7
-weight = sample(x = 40:100, size = 10)
-age = sample(x = 1:70, size = 10)
-gender = sample(x = c("MALE", "FEMALE"),
-                size = 10,
-                replace = TRUE)
+weight= sample(x = 40:100,size = 10)
+age= sample(x = 1:70,size = 10) 
+gender= sample(x = c("MALE","FEMALE"),size = 10,replace = TRUE)
+
+dat1=data.frame(weight=weight,age=age,gender=gender)
+
+##Give up this
+#factor(dat1,ordered = TRUE,exclude = weight)
+
+for (i in dat1) {
+  print(i["gender"])
+}
+
+
+
+
+
+
+
