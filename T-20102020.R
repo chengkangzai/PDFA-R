@@ -40,13 +40,9 @@ gender= sample(x = c("MALE","FEMALE"),size = 10,replace = TRUE)
 
 dat1=data.frame(weight=weight,age=age,gender=gender)
 
-##Give up this
-#factor(dat1,ordered = TRUE,exclude = weight)
+print(factor(dat1$gender))
 
-for (i in dat1) {
-  print(i["gender"])
-}
-
+tapply(dat1$age, factor(dat1$gender), ave, na.rm = TRUE)
 
 
 
