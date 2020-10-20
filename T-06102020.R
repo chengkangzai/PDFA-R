@@ -30,9 +30,7 @@ functionReverse = function(input) {
 
 #############################################################################
 #3
-sales = as.integer(readline(prompt = "You sale how much boi"))
-
-message(getSalary(sales))
+message(getSalary(as.integer(readline(prompt = "You sale how much boi"))))
 
 getSalary = function(sales) {
   return((sales * 15 / 100) + 100)
@@ -40,14 +38,32 @@ getSalary = function(sales) {
 
 #############################################################################
 #4
-input = as.integer(readline(prompt = "Give me a number"))
-
-message(getFactoria(input))
+message(getFactoria(as.integer(readline(prompt = "Can Give me a number arh ?"))))
 
 getFactoria = function(input) {
-  fact=1
-  for( i in 1:input) {
+  fact = 1
+  for (i in 1:input) {
     fact = fact * i
   }
   return(fact)
 }
+
+#############################################################################
+## Q1 Update
+q1 = function() {
+  radius = as.integer(readline(prompt = "Enter radius: "))
+  print(paste("Calculate: A = Area, B = Circumference, C = Diameter"))
+  option = readline(prompt = "Enter calculation type: ")
+  calculation = switch (
+    option,
+    "A" = 3.142 * radius * radius,
+    "B" = 2 * 3.142 * radius,
+    "C" = 2 * radius
+    
+  )
+  print(paste("The calculation is", calculation))
+}
+
+q1()
+
+
