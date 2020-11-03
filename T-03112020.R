@@ -27,5 +27,6 @@ sum(Q3sum[,3])
 install.packages("readxl") ## excel
 library("readxl")
 download.file(url = "http://www.jaredlander.com/data/ExcelExample.xlsx",destfile = "ExcelExample.xlsx",quiet = TRUE,mode = "wb")
-d3 = read_excel(path = "ExcelExample.xlsx", sheet = 3)
+excelDate = read_excel(path = "ExcelExample.xlsx", sheet = 3)
+
 
