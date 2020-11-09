@@ -1,0 +1,5 @@
+data = read.delim("assignment/data.csv", sep = ",", header = TRUE)
+class(data)
+library("ggplot2")
+library("psych")
+ggplot(data = data,aes(x=year,y=visib))+geom_line(colour="green")
