@@ -3,71 +3,7 @@
 
 ##Function Base!
 
-init = function() {
-  getSeason <<- function(input.date) {
-    numeric.date = 100 * month(input.date) + day(input.date)
-    ## input Seasons upper limits in the form MMDD in the "break =" option:
-    cuts <-
-      base::cut(numeric.date, breaks = c(0, 319, 0620, 0921, 1220, 1231))
-    # rename the resulting groups (could've been done within cut(...levels=) if "Winter" wasn't double
-    levels(cuts) = c("Winter", "Spring", "Summer", "Fall", "Winter")
-    return(cuts)
-  }
-  
-  printDetail <<- function(input) {
-    message(c("Mean : ", mean(input)))
-    message(c("Min : ", min(input)))
-    message(c("Max : ", max(input)))
-  }
-  
-  initdata <<- function() {
-    datas <<- read.delim(
-      "https://raw.githubusercontent.com/chengkangzai/PDFA-R/master/assignment/data.csv",
-      sep = ",",
-      header = TRUE
-    )
-    
-  }
-  
-  initVariable <<- function() {
-    datas$time <<- as.POSIXct(datas[, 15], format = "%d/%m/%Y %H:%M")
-    datas$season <<- getSeason(datas$time)
-    
-    JFK <<- filter(datas, origin == "JFK")
-    LGA <<- filter(datas, origin == "LGA")
-    winter <<- filter(datas, season == "Winter")
-    fall <<- filter(datas, season == "Fall")
-    spring <<- filter(datas, season == "Spring")
-    summer <<- filter(datas, season == "Summer")
-  }
-  
-  initEnv <<- function() {
-    pacman::p_load(pacman, ggplot2, gridExtra, dplyr, lubridate)
-  }
-  
-  destoryEnv <<- function() {
-    pacman::p_unload(all)
-  }
-  
-  destoryData <<- function() {
-    rm(list = ls())
-  }
-  
-  destoryEverything <<- function(){
-    destoryData()
-    destoryEnv()
-  }
-  
-  clear <<- function(){
-    cat("\014")
-  }
-  
-  initEnv()
-  initdata()
-  initVariable()
-}
 
-init()
 
 
 
@@ -75,6 +11,7 @@ init()
 #See what can we do ?
 #plot(datas)
 summary(datas)
+cat("\014") ## Control L ...
 
 #TESTING AREA
 ggplot(data = datas, aes(x = month, y = visib)) +
@@ -94,26 +31,17 @@ View(datas)
 #Wind Speed
 ##by count
 a = ggplot(data = JFK, aes(wind_speed)) +
-  geom_histogram(binwidth = 5,
-                 col = "white",
-                 fill = "blue") +
+  geom_histogram(binwidth = 5,col = "white",fill = "blue") +
   labs(title = "Count of Wind Speed for JFK ",
        x = "Wind Speed", y = "Count")
 b = ggplot(data = LGA, aes(wind_speed)) +
-  geom_histogram(binwidth = 5,
-                 col = "white",
-                 fill = "green") +
+  geom_histogram(binwidth = 5,col = "white",fill = "green") +
   labs(title = "Count of Wind Speed for LGA ",
        x = "Wind Speed", y = "Count")
-JFKvsLGA = marrangeGrob(list(a, b),
-                        nrow = 1,
-                        ncol = 2,
-                        top = "JFK vs LGA")
+JFKvsLGA = marrangeGrob(list(a, b),nrow = 1,ncol = 2,top = "JFK vs LGA")
 
 c = ggplot(data = datas, aes(wind_speed)) +
-  geom_histogram(binwidth = 5,
-                 col = "white",
-                 fill = "blue") +
+  geom_histogram(binwidth = 5,col = "white",fill = "blue") +
   labs(title = "Average Wind Speed for 2 air port",
        x = "Wind Speed", y = "Count")
 
@@ -129,10 +57,7 @@ b = ggplot(data = LGA, aes(x = month, y = wind_speed)) +
   labs(title = "Yearly of Wind Speed for LGA ",
        x = "Month", y = "Wind Speed")
 
-JFKvsLGA = marrangeGrob(list(a, b),
-                        nrow = 1,
-                        ncol = 2,
-                        top = "JFK vs LGA")
+JFKvsLGA = marrangeGrob(list(a, b), nrow = 1,ncol = 2,top = "JFK vs LGA")
 
 c = ggplot(data = datas, aes(x = month, y = wind_speed)) +
   geom_histogram(stat = 'identity', fill = "blue", bins = 30) +
