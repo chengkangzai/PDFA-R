@@ -5,6 +5,8 @@ Extra feature
 
 //Pre processing
 1. check if anydata is N/A
+2. add field for temp in celcius
 
 TODO
 //Best fit line
+https://novustat.com/statistik-blog/alternatives-standard-graphs-ggplot2-r.html
