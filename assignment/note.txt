@@ -1,0 +1,10 @@
+Extra feature 
+1. Pacman
+2. ManageGrob
+
+
+//Pre processing
+1. check if anydata is N/A
+
+TODO
+//Best fit line
