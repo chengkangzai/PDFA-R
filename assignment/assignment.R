@@ -32,10 +32,11 @@ init = function() {
   }
   
   initVariable <<- function() {
-    datas$time <<- as.POSIXct(datas[, 15], format = "%d/%m/%Y %H:%M")
+    datas$time <<- as.POSIXct(datas$time_hour, format = "%d/%m/%Y %H:%M")
     datas$season <<- getSeason(datas$time)
     datas$temp_cel <<- (datas$temp - 32) / 1.8
-    datas$dewp_cel <<- (datas$temp - 32) / 1.8
+    datas$dewp_cel <<- (datas$dewp - 32) / 1.8
+    datas$precip_cm <<- datas$precip * 2.54
     
     JFK <<- filter(datas, origin == "JFK")
     LGA <<- filter(datas, origin == "LGA")
@@ -63,7 +64,7 @@ init = function() {
   }
   
   initEnv <<- function() {
-    pacman::p_load(pacman, ggplot2, gridExtra, dplyr, lubridate)
+    pacman::p_load(pacman, ggplot2, gridExtra, dplyr, lubridate,climatol)
   }
   
   destoryEnv <<- function() {
@@ -71,9 +72,10 @@ init = function() {
   }
   
   clear <<- function(){
-    cat("\014")
     dev.off(dev.list())
+    cat("\014")
   }
+  
   rm(list=ls())
   initEnv()
   initdata()
@@ -97,12 +99,31 @@ plot(datas$temp, data$humid)  # Categorical variable
 day = datas[datas$time >= "2013-01-02 00:00:00" &
               datas$time <= "2013-01-02 24:00:00", ]
 
+dirbreak <- seq(-12.25,360,22.5)
+dirdengji <-c("N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW")
+index <- LGA$wind_dir > 347.25
+LGA <- LGA[complete.cases(LGA$wind_dir),]
+LGA$wind_dir[index] <- LGA$wind_dir[index] - 360
+LGA$wind_dir2 <- cut(LGA$wind_dir,breaks = dirbreak,
+                                labels = dirdengji,include.lowest = TRUE)
+LGA$wind_speed2 <- cut_interval(LGA$wind_speed,4)
+LGAwind <- as.data.frame.array(table(LGA$wind_speed2,LGA$wind_dir2))
 
-any(is.na(datas))
-table(is.na(datas))
+
+par(family = "STKaiti")
+rosavent(LGAwind, 4, 4, ang=-3*pi/16, margen=c(0,0,2,0),
+         col=rainbow(4,0.5,0.92,start=0.1,end=0.9),key = FALSE)
+
+glimpse(weather,60)
+pacman::p_load(nycflights13)
+
+clear()
+any(is.na(LGA$wind_dir))
+table(is.na(LGA$wind_dir))
 colSums(is.na(datas))
 nrow(datas)
 View(datas)
+
 #END TESTING
 
 temp =summer$temp_cel
@@ -111,11 +132,13 @@ printDetail(temp)
 
 # Wind Speed ---------------------------------
 a = ggplot(data = JFK, aes(wind_speed)) +
-  geom_histogram(binwidth = 5,col = "white",fill = "blue") +
+  geom_histogram(binwidth = 5,col = "white",fill = "cyan") +
+  geom_freqpoly(bins = 30)+
   labs(title = "Count of Wind Speed for JFK ",
        x = "Wind Speed", y = "Count")
 b = ggplot(data = LGA, aes(wind_speed)) +
   geom_histogram(binwidth = 5,col = "white",fill = "green") +
+  geom_freqpoly(bins = 30)+
   labs(title = "Count of Wind Speed for LGA ",
        x = "Wind Speed", y = "Count")
 JFKvsLGA = marrangeGrob(list(a, b),nrow = 1,ncol = 2,top = "JFK vs LGA")
@@ -173,11 +196,13 @@ seasons = marrangeGrob(list(w, f,su,sp), nrow = 2,ncol = 2,top = "4 seson")
 
 ##By Count
 a = ggplot(data = JFK, aes(wind_gust)) +
-  geom_histogram(binwidth = 5,col = "white",fill = "blue") +
+  geom_histogram(binwidth = 5,col = "white",fill = "cyan") +
+  geom_freqpoly(bins = 40)+
   labs(title = "Count of Wind Gust for JFK ",
        x = "Wind Gust", y = "Count")
 b = ggplot(data = LGA, aes(wind_gust)) +
   geom_histogram(binwidth = 5,col = "white",fill = "green") +
+  geom_freqpoly(bins = 40)+
   labs(title = "Count of Wind Gust for LGA ",
        x = "Wind Gust", y = "Count")
 JFKvsLGA = marrangeGrob(list(a, b),nrow = 1,ncol = 2,top = "JFK vs LGA")
@@ -234,6 +259,23 @@ b = ggplot(data = LGA, aes(x = hour, y = wind_dir)) +
 JFKvsLGA = marrangeGrob(list(a, b), nrow = 1,ncol = 2,top = "JFK vs LGA")
 
 
+  dirbreak = seq(-12.25,360,22.5)
+  dirdengji =c("N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW")
+  index = LGA$wind_dir > 347.25
+  LGA = LGA[complete.cases(LGA$wind_dir),]
+  LGA$wind_dir[index] = LGA$wind_dir[index] - 360 & !is.na(LGA$wind_dir[index])
+  LGA$wind_dir2 = cut(LGA$wind_dir,breaks = dirbreak,
+                       labels = dirdengji,include.lowest = TRUE)
+  LGA$wind_speed2 = cut_interval(LGA$wind_speed,4)
+  LGAwind <<- as.data.frame.array(table(LGA$wind_speed2,LGA$wind_dir2))
+  
+
+
+par(rosavent(LGAwind,4,4,ang = -3 * pi / 16,margen = c(0, 0, 2, 0),
+  col = rainbow(4, 0.5, 0.92, start = 0.1, end = 0.9),key = FALSE))
+
+rm(list=ls())
+clear()
 # Temp ---------------------------------
 #TEmp with Airport
 plot(datas$temp_cel,
@@ -257,6 +299,7 @@ plot(LGA$temp_cel,
      main = "LGA Count of Temperature in Celsius",
      type = 'o')
 
+plot(winter$temp_cel,type='o')
 clear()
 
 #Yearly
@@ -307,6 +350,12 @@ d = ggplot(data = LGA_winter, aes(x = month, y = temp_cel)) +
        x = "Month", y = "Temperature")
   
   seasons = marrangeGrob(list(a,b,c,d), nrow = 2,ncol = 2,top = "4 season")
+  
+  
+x = c(sum(winter$temp_cel),sum(fall$temp_cel),sum(summer$temp_cel),sum(spring$temp_cel))
+labels <- c("Winter","Fall","Summer","Spring")
+  ##Verify the Data Intergrity
+test = pie(x,labels,main = "Total sum of Tempreature for every season in both Airports")
   
 #day
 a = ggplot(data = winter_day, aes(x = hour, y = temp_cel)) +
@@ -471,63 +520,32 @@ ggplot(data = LGA, aes(x = temp_cel, y = dewp_cel))  +
 #VS
 
 ggplot(data = LGA, aes(x = temp_cel, y = dewp_cel))  +
-  geom_jitter(na.rm = TRUE) + geom_smooth(span = 0.3, method = "loess") +
+  geom_jitter(na.rm = TRUE) + geom_smooth(span = 0.1, method = "loess") +
   labs(title = " Dewpoint vs Temperature for LGA ",
        x = "Temperature (C)", y = "Dewpoint (C)")
 #By Day
 
 
+# precip --------------------------------
+#Season 
+x = c(sum(winter$precip),sum(fall$precip),sum(summer$precip),sum(spring$precip))
+labels <- c("Winter","Fall","Summer","Spring")
+pie(x,labels,main = "Total sum of Precipitation for every season in both Airports")
 
-# Percip --------------------------------
-
+#Yearly
+#June marks highest, mean most probably be rain
+ggplot(data = datas, aes(x=month,y=precip_cm)) +
+  geom_histogram(stat = 'identity') +
+  labs(title = "Count of precip for both Airports ",
+       x = "Month", y = "Precipitation (cm)")
 
 # Pressure ------------------------------
-
+plot(datas$pressure,datas$wind_speed)
+plot(datas$pressure,datas$temp)
 
 # Visib ---------------------------------
+ggplot(data = datas, aes(visib)) + geom_histogram(bins = 30) +
+  geom_freqpoly(bins = 30)+
+  labs(title = "Count of Wind Direction for JFK ",
+       x = "Wind Gust", y = "Count")
 
-
-# Visib vs Humid ------------------------
-
-
-##which month have more and less
-ggplot(data = datas, aes(x = month, y = wind_speed)) + geom_bar(stat = 'identity')
-ggplot(data = datas, aes(x = month, y = wind_gust)) + geom_bar(stat = 'identity')
-
-ggplot(data = datas, aes(wind_gust)) + geom_histogram(bins = 30) +
-  geom_freqpoly(bins = 40)
-
-##
-ggplot(data = datas, aes(x = month, y = temp)) + geom_bar(stat = 'identity')
-ggplot(data = datas, aes(x = hour, y = precip)) + geom_bar(stat = 'identity')
-
-##
-ggplot(datas, aes(x = wind_speed, y = wind_gust)) +
-  geom_point() +
-  labs(title = "The co-variation between Wind Speed and Wind Gust",
-       x = "Wind Speed", y = "Wind Gust")
-
-
-##
-ggplot(data = datas, aes(x = month, y = temp)) + geom_line() +
-  labs(title = "Hourly Temperature for Year 2013",
-       x = "Time", y = "Temperature(F)")
-
-ggplot(data = datas, aes(x = time, y = temp)) + geom_line() +
-  labs(title = "Hourly Temperature for Year 2013",
-       x = "Time", y = "Temperature(F)")
-
-
-## Get only one day and only JFK
-test = datas[datas$time >= "2013-01-02 00:00:00" &
-               datas$time <= "2013-01-02 24:00:00", ]
-
-a = ggplot(data = JFK, aes(x = time, y = temp)) + geom_line() +
-  labs(title = "Hourly Temperature for 2013-01-02 for JFK",
-       x = "Time", y = "Temperature(F)")
-
-b = ggplot(data = LGA, aes(x = time, y = temp)) + geom_line() +
-  labs(title = "Hourly Temperature for 2013-01-02 for LGA",
-       x = "Time", y = "Temperature(F)")
-
-JFKvsLGA = marrangeGrob(list(a, b), nrow = 1, ncol = 2)
