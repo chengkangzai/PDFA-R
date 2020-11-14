@@ -50,10 +50,10 @@ init = function() {
   }
   
   initDayValue <<- function(){
-    winter_day <<- LGA[LGA$time >= "2013-01-20 00:00:00" & LGA$time <= "2013-01-20 24:00:00", ]
-    fall_day <<- LGA[LGA$time >= "2013-10-20 00:00:00" & LGA$time <= "2013-10-20 24:00:00", ]
-    summer_day <<-LGA[LGA$time >= "2013-07-20 00:00:00" & LGA$time <= "2013-07-20 24:00:00", ]
-    spring_day <<-LGA[LGA$time >= "2013-04-20 00:00:00" & LGA$time <= "2013-04-20 24:00:00", ]
+    winter_day<<- LGA[LGA$time >= "2013-01-20 00:00:00" & LGA$time <= "2013-01-20 24:00:00", ]
+    fall_day<<- LGA[LGA$time >= "2013-10-20 00:00:00" & LGA$time <= "2013-10-20 24:00:00", ]
+    summer_day<<-LGA[LGA$time >= "2013-07-20 00:00:00" & LGA$time <= "2013-07-20 24:00:00", ]
+    spring_day<<-LGA[LGA$time >= "2013-04-20 00:00:00" & LGA$time <= "2013-04-20 24:00:00", ]
   }
   
   initEnv <<- function() {
@@ -267,10 +267,8 @@ JFKvsLGA = marrangeGrob(list(a, b), nrow = 1,ncol = 2,top = "JFK vs LGA")
 
 
 par(rosavent(LGAwind,4,4,ang = -3 * pi / 16,margen = c(0, 0, 2, 0),
-  col = rainbow(4, 0.5, 0.92, start = 0.1, end = 0.9),key = FALSE))
+  col = rainbow(4, 0.5, 0.92, start = 0.1, end = 0.9),key = FALSE,main="LGA Airport 2013 wind-rose Plot"))
 
-rm(list=ls())
-clear()
 # Temp ---------------------------------
 #TEmp with Airport
 plot(datas$temp_cel,

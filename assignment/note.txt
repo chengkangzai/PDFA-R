@@ -10,3 +10,4 @@ Extra feature
 TODO
 //Best fit line
 https://novustat.com/statistik-blog/alternatives-standard-graphs-ggplot2-r.html
+https://rpubs.com/DaiTu/395584
