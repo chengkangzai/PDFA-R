@@ -6,10 +6,7 @@
 init = function() {
   getSeason <<- function(input.date) {
     numeric.date = 100 * month(input.date) + day(input.date)
-    ## input Seasons upper limits in the form MMDD in the "break =" option:
-    cuts <-
-      base::cut(numeric.date, breaks = c(0, 319, 0620, 0921, 1220, 1231))
-    # rename the resulting groups (could've been done within cut(...levels=) if "Winter" wasn't double
+    cuts <-base::cut(numeric.date, breaks = c(0, 319, 0620, 0921, 1220, 1231))
     levels(cuts) = c("Winter", "Spring", "Summer", "Fall", "Winter")
     return(cuts)
   }
@@ -23,29 +20,25 @@ init = function() {
   initdata <<- function() {
     if (!exists("datas")) {
       remoteFileLink = "https://firebasestorage.googleapis.com/v0/b/chengkangzai.appspot.com/o/data.csv?alt=media&token=1e46df0c-b1a3-4bb6-8353-61c66d114bff"
-      datas <<- read.delim(
-        remoteFileLink,
-        sep = ",",
-        header = TRUE
-      )
+      datas <<-read.delim(remoteFileLink,sep = ",",header = TRUE)
     }
   }
   
-  initVariable <<- function() {
+  initExtraCol <<- function(){
     datas$time <<- as.POSIXct(datas$time_hour, format = "%d/%m/%Y %H:%M")
     datas$season <<- getSeason(datas$time)
     datas$temp_cel <<- (datas$temp - 32) / 1.8
     datas$dewp_cel <<- (datas$dewp - 32) / 1.8
     datas$precip_cm <<- datas$precip * 2.54
-    
+  }
+  
+  initVariable <<- function() {
     JFK <<- filter(datas, origin == "JFK")
     LGA <<- filter(datas, origin == "LGA")
     winter <<- filter(datas, season == "Winter")
     fall <<- filter(datas, season == "Fall")
     spring <<- filter(datas, season == "Spring")
     summer <<- filter(datas, season == "Summer")
-    
-    
   }
   
   initLGATemp <<- function(){
@@ -57,10 +50,10 @@ init = function() {
   }
   
   initDayValue <<- function(){
-    winter_day<<- LGA[LGA$time >= "2013-01-20 00:00:00" & LGA$time <= "2013-01-20 24:00:00", ]
-    fall_day<<- LGA[LGA$time >= "2013-10-20 00:00:00" & LGA$time <= "2013-10-20 24:00:00", ]
-    summer_day<<-LGA[LGA$time >= "2013-07-20 00:00:00" & LGA$time <= "2013-07-20 24:00:00", ]
-    spring_day<<-LGA[LGA$time >= "2013-04-20 00:00:00" & LGA$time <= "2013-04-20 24:00:00", ]
+    winter_day <<- LGA[LGA$time >= "2013-01-20 00:00:00" & LGA$time <= "2013-01-20 24:00:00", ]
+    fall_day <<- LGA[LGA$time >= "2013-10-20 00:00:00" & LGA$time <= "2013-10-20 24:00:00", ]
+    summer_day <<-LGA[LGA$time >= "2013-07-20 00:00:00" & LGA$time <= "2013-07-20 24:00:00", ]
+    spring_day <<-LGA[LGA$time >= "2013-04-20 00:00:00" & LGA$time <= "2013-04-20 24:00:00", ]
   }
   
   initEnv <<- function() {
@@ -79,6 +72,7 @@ init = function() {
   rm(list=ls())
   initEnv()
   initdata()
+  initExtraCol()
   initVariable()
   initLGATemp()
   initDayValue()
@@ -87,11 +81,11 @@ init = function() {
 init()
 
 clear()
-
+rm(list=ls())
 plot(datas)
 summary(datas)
-
-#TESTING AREA
+ 
+#TESTING AREA ------
 ggplot(data = datas, aes(x = month, y = visib)) +
   geom_bar(colour = "green", stat = 'identity')
 plot(datas$temp, data$humid)  # Categorical variable
@@ -115,6 +109,7 @@ rosavent(LGAwind, 4, 4, ang=-3*pi/16, margen=c(0,0,2,0),
          col=rainbow(4,0.5,0.92,start=0.1,end=0.9),key = FALSE)
 
 glimpse(weather,60)
+
 pacman::p_load(nycflights13)
 
 clear()
