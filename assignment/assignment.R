@@ -59,6 +59,7 @@ init = function() {
   }
   
   initEnv <<- function() {
+    #there
     pacman::p_load(pacman, ggplot2, gridExtra, dplyr, lubridate, climatol, plotrix)
   }
   
@@ -262,7 +263,7 @@ c = ggplot(data = datas, aes(x = month, y = wind_gust)) +
 
 
 #Season
-
+#here
 w = ggplot(data = winter, aes(x = wind_speed, y = wind_gust)) +
   geom_jitter() + geom_smooth()+
 labs(title = "Winter Wind Gust and Wind Gust for Both Airport ",
@@ -283,8 +284,8 @@ sp = ggplot(data = spring, aes(x = wind_speed, y = wind_gust)) +
 labs(title = "Spring Wind Gust and Wind Gust for Both Airport ",
 x = "Total Wind Speed (km/h)", y = "Total Wind Gust  (km/h)")
 
-seasons = marrangeGrob(list(w, f,su,sp), nrow = 2,ncol = 2,top = "Relationship between Wind Speed and Wind Gust by Season")
-
+marrangeGrob(list(w, f,su,sp), nrow = 2,ncol = 2,top = "Relationship between Wind Speed and Wind Gust by Season")
+par()
 ggsave(filename = "assignment/plot/06. Relationship between Wind Speed and Wind Gust by Season.jpg",seasons,dpi = 1000,width = 10,height = 5)
 
 # Wind Dir ---------------------------------
@@ -292,6 +293,7 @@ ggsave(filename = "assignment/plot/06. Relationship between Wind Speed and Wind 
 
 
 #LGA
+#there
 dirbreak = seq(-12.25, 360, 22.5)
 dirLevel =c("N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW")
 index = winter$wind_dir > 347.25
@@ -409,6 +411,7 @@ dev.off()
 clear()
 
 #Yearly
+#here
 monthlyTemp=ggplot(data = LGA, aes(x = month, y = temp_cel))  +
   geom_jitter() + stat_summary(fun=mean, colour="red", geom="line", size = 2)+
   labs(title = "Yearly Temperature for LGA Airports",
