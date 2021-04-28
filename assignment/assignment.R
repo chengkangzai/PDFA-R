@@ -19,7 +19,7 @@ init = function() {
   
   initdata <<- function() {
     if (!exists("datas")) {
-      remoteFileLink = "https://firebasestorage.googleapis.com/v0/b/chengkangzai.appspot.com/o/data.csv?alt=media&token=1e46df0c-b1a3-4bb6-8353-61c66d114bff"
+      remoteFileLink = "https://raw.githubusercontent.com/chengkangzai/PDFA-R/master/assignment/data.csv"
       datas <<-read.delim(remoteFileLink,sep = ",",header = TRUE)
     }
   }
